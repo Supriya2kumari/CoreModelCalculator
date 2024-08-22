@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Model Calculator</title>
+</head>
+<body>
+    <h1>Core Model Calculator</h1>
+    <form id="coreForm">
+        <label for="coreModel">Enter Core Model:</label>
+        <input type="text" id="coreModel" name="coreModel" required>
+        <button type="submit">Calculate</button>
+    </form>
+
+    <h2>Results</h2>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('coreForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const coreModel = document.getElementById('coreModel').value;
+            
+            fetch(`/calculate?coreModel=${coreModel}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('results').innerHTML = `
+                        <p>Core Factor: ${data.coreFactor}</p>
+                        <p>Effective Volume: ${data.effectiveVolume} cm³</p>
+                        <p>Effective Length: ${data.effectiveLength} cm</p>
+                        <p>Effective Area: ${data.effectiveArea} cm²</p>
+                        <p>Core Window Area: ${data.coreWindowArea} cm²</p>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('results').innerHTML = '<p>Error calculating values. Please check the core model and try again.</p>';
+                });
+        });
+    </script>
+</body>
+</html>
